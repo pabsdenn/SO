@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <style>
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+       #map {
+	position: absolute;
+        width: 98%;
+	height: 98%;
+       }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <script>
+      function initMap() {
+        var map = new google.maps.Map(document.getElementById('map'));
+        var geocoder = new google.maps.Geocoder();
+        geocodeAddress(geocoder, map);
+      }
+
+      function geocodeAddress(geocoder, resultsMap) {
+        var address = parent.document.getElementById('_ctl0__ctl0__Splitter_maingroup__Address_maingroup__Address_StreetAddress1').value + ' ' + parent.document.getElementById('_ctl0__ctl0__Splitter_maingroup__Address_maingroup__Address_StreetZipcode').value + ' ' + parent.document.getElementById('_ctl0__ctl0__Splitter_maingroup__Address_maingroup__Address_StreetCity').value;
+	geocoder.geocode({'address': address}, function(results, status) {
+          if (status === 'OK') {
+            resultsMap.setCenter(results[0].geometry.location);
+	    resultsMap.setZoom(15);
+            var marker = new google.maps.Marker({
+              map: resultsMap,
+              position: results[0].geometry.location,
+            });
+          } else {
+            alert('Die Adresse ist nicht verf\u00fcgbar oder wurde nicht gefunden!');
+          }
+        });
+      }
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAbl_4c3oGlCcCmwDf2R2m0X0cwIONLHxs&callback=initMap">
+    </script>
+  </body>
+</html>
